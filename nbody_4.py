@@ -4,7 +4,7 @@
     Reduced loop overheads by using cached body pairs
     Original Runtime:   115.29765961204103 seconds
     Optimized Runtime:  102.25295634918284 seconds
-    Speedup:    1.12757287151984
+    Speedup:    1.12757287151984x
     Improvement rank:   2nd
 """
 
@@ -70,6 +70,7 @@ def update_rs(r, dt, vx, vy, vz):
     r[1] += dt * vy
     r[2] += dt * vz
 
+# Generator all body pairs
 def generate_body_pairs(keys):
     cached_body_pairs = []
     seenit = []
@@ -100,7 +101,8 @@ def advance(dt, cached_body_pairs):
 
 def compute_energy(m1, m2, dx, dy, dz):
     return (m1 * m2) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
-    
+
+# Add cached body pairs
 def report_energy(cached_body_pairs, e=0.0):
     '''
         compute the energy and return it so that it can be printed

@@ -4,7 +4,7 @@
     Used local rather than global variables
     Original Runtime:   115.29765961204103 seconds
     Optimize Runtime:   111.52608338893835 seconds
-    Speedup:    1.03381788464632
+    Speedup:    1.03381788464632x
     Improvement rank:   4th
 """
 
@@ -118,7 +118,6 @@ def report_energy(e, BODIES):
         (r, [vx, vy, vz], m) = BODIES[body]
         e += m * (vx * vx + vy * vy + vz * vz) / 2.
 
-    # Add returned value
     return e
 
 # Add BODIES to parameters
@@ -154,12 +153,9 @@ def nbody(loops, reference, iterations):
     # Add BODIES to parameters
     BODIES = offset_momentum(BODIES[reference], BODIES)
 
-    # Initialize e
-    e = 0.0
-
     for _ in range(loops):
-        # Add BODIES to parameters and get returned e
-        e = report_energy(0, BODIES)
+        # Add BODIES to parameters
+        report_energy(0, BODIES)
 
         for _ in range(iterations):
             # Add BODIES to parameters
@@ -170,5 +166,4 @@ def nbody(loops, reference, iterations):
 
 if __name__ == '__main__':
     import timeit
-    # Add BODIES to parameters
     print(timeit.timeit("nbody(100, 'sun', 20000)", setup="from __main__ import nbody", number=1))
