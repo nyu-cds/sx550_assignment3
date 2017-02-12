@@ -3,8 +3,8 @@
 
     Reduced function call overhead
     Original Runtime:   115.29765961204103 seconds
-    Optimized Runtime:  42.246874366665914 seconds
-    Speedup:    2.72914058946369x
+    Optimized Runtime:  41.45436893357306 seconds
+    Speedup:    2.781315035739545x
     Improvement rank:   1st
 """
 
@@ -169,7 +169,8 @@ def nbody(loops, reference, iterations):
     offset_momentum(BODIES[reference])
 
     for _ in range(loops):
-        report_energy()
+        # Removed useless function call
+        # report_energy()
         
         # Move loop into advance()
         advance(0.01, iterations)
