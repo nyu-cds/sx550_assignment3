@@ -2,9 +2,9 @@
     N-body simulation.
 
     Replaced seenit list with set
-    Original Runtime:   115.29765961204103 seconds
-    Optimized Rumtime:  110.80406021221951 seconds
-    Speedup:    1.04055446516324x
+    Original Runtime:   566.1638781201518 / 5 = 113.23277562403037 seconds
+    Optimized Rumtime:  550.3739267641602 / 5 = 110.07478535283204 seconds
+    Speedup:    1.0286894974273695x
     Improvement rank:   3rd
 """
 
@@ -152,4 +152,4 @@ def nbody(loops, reference, iterations):
 
 if __name__ == '__main__':
     import timeit
-    print(timeit.timeit("nbody(100, 'sun', 20000)", setup="from __main__ import nbody", number=1))
+    print(timeit.timeit("nbody(100, 'sun', 20000)", setup="from __main__ import nbody", number=5))

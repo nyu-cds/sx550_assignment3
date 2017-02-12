@@ -2,9 +2,9 @@
     N-body simulation.
 
     Reduced loop overheads by using cached body pairs
-    Original Runtime:   115.29765961204103 seconds
-    Optimized Runtime:  102.25295634918284 seconds
-    Speedup:    1.12757287151984x
+    Original Runtime:   566.1638781201518 / 5 = 113.23277562403037 seconds
+    Optimized Rumtime:  513.2286311845505 / 5 = 102.64572623691011 seconds
+    Speedup:    1.1031416482229854x
     Improvement rank:   2nd
 """
 
@@ -161,4 +161,4 @@ def nbody(loops, reference, iterations):
 
 if __name__ == '__main__':
     import timeit
-    print(timeit.timeit("nbody(100, 'sun', 20000)", setup="from __main__ import nbody", number=1))
+    print(timeit.timeit("nbody(100, 'sun', 20000)", setup="from __main__ import nbody", number=5))

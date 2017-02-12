@@ -2,9 +2,9 @@
     N-body simulation.
 
     Used local rather than global variables
-    Original Runtime:   115.29765961204103 seconds
-    Optimize Runtime:   111.52608338893835 seconds
-    Speedup:    1.03381788464632x
+    Original Runtime:   566.1638781201518 / 5 = 113.23277562403037 seconds
+    Optimized Rumtime:  565.9302213493982 / 5 = 113.18604426987963 seconds
+    Speedup:    1.0004128720501912x
     Improvement rank:   4th
 """
 
@@ -166,4 +166,4 @@ def nbody(loops, reference, iterations):
 
 if __name__ == '__main__':
     import timeit
-    print(timeit.timeit("nbody(100, 'sun', 20000)", setup="from __main__ import nbody", number=1))
+    print(timeit.timeit("nbody(100, 'sun', 20000)", setup="from __main__ import nbody", number=5))
