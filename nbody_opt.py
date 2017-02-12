@@ -4,7 +4,7 @@
     Combined all optimizations
     Original Runtime:   566.1638781201518 / 5 = 113.23277562403037 seconds
     Optimized Runtime:  165.8094674285046 / 5 = 33.16189348570092 seconds
-    Speedup:    3.54820948927518x
+    Speedup:    3.4145449406516915x
 """
 
 # Initialize BODIES and return it
