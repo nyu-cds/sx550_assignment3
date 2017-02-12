@@ -5,6 +5,7 @@
     Original Runtime:   115.29765961204103 seconds
     Optimized Rumtime:  110.80406021221951 seconds
     Speedup:    1.04055446516324
+    Improvement rank:   3rd
 """
 
 PI = 3.14159265358979323

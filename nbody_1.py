@@ -4,7 +4,8 @@
     Reduced function call overhead
     Original Runtime:   115.29765961204103 seconds
     Optimized Runtime:  42.246874366665914 seconds
-    Speedup:    2.72914058946369
+    Speedup:    2.72914058946369x
+    Improvement rank:   1st
 """
 
 PI = 3.14159265358979323

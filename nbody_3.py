@@ -5,6 +5,7 @@
     Original Runtime:   115.29765961204103 seconds
     Optimize Runtime:   111.52608338893835 seconds
     Speedup:    1.03381788464632
+    Improvement rank:   4th
 """
 
 # Initialize BODIES and return it

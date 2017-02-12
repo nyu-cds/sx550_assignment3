@@ -5,6 +5,7 @@
     Original Runtime:   115.29765961204103 seconds
     Optimized Runtime:  102.25295634918284 seconds
     Speedup:    1.12757287151984
+    Improvement rank:   2nd
 """
 
 PI = 3.14159265358979323
