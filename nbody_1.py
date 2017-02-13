@@ -112,7 +112,7 @@ def advance(dt, iterations):
             r[1] += dt * vy
             r[2] += dt * vz
 
-
+# Deprecated
 def compute_energy(m1, m2, dx, dy, dz):
     return (m1 * m2) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
     
