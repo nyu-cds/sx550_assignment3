@@ -89,9 +89,6 @@ def advance(dt, iterations, BODIES, cached_body_pairs):
 
     # Add returned value
     return BODIES
-
-def compute_energy(m1, m2, dx, dy, dz):
-    return (m1 * m2) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
     
 # Add BODIES and cached_body_pairs to parameters
 def report_energy(BODIES, cached_body_pairs, e=0.0):
