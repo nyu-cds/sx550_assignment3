@@ -11,6 +11,9 @@ from itertools import combinations
 
 # Initialize BODIES and return it
 def initialize():
+    '''
+        initialize statue of BODIES
+    '''
     PI = 3.14159265358979323
     SOLAR_MASS = 4 * PI * PI
     DAYS_PER_YEAR = 365.24
@@ -149,13 +152,12 @@ def nbody(loops, reference, iterations):
     offset_momentum(BODIES[reference], BODIES)
 
     for _ in range(loops):
-        # Removed useless function call
-        # report_energy()
-        
         # Move loop into advance()
         BODIES = advance(0.01, iterations, BODIES, cached_body_pairs)
         print(report_energy(BODIES, cached_body_pairs))
 
 if __name__ == '__main__':
+
+    # Compute total runtime for 5 runs
     import timeit
     print(timeit.timeit("nbody(100, 'sun', 20000)", setup="from __main__ import nbody", number=5))
