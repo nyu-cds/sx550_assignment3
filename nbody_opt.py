@@ -6,6 +6,8 @@
     Optimized Runtime:  165.8094674285046 / 5 = 33.16189348570092 seconds
     Speedup:    3.4145449406516915x
 """
+from itertools import combinations
+
 
 # Initialize BODIES and return it
 def initialize():
@@ -49,17 +51,6 @@ def initialize():
                 5.15138902046611451e-05 * SOLAR_MASS)}
 
     return BODIES
-
-# Generator all body pairs
-def generate_body_pairs(keys):
-    cached_body_pairs = []
-    seenit = []
-    for body1 in keys:
-        for body2 in keys:
-            if (body1 != body2) and not (body2 in seenit):
-                cached_body_pairs.append([body1, body2])
-                seenit.append(body1)
-    return cached_body_pairs
 
 # Add iterations
 # Add BODIES to parameters
@@ -160,7 +151,7 @@ def nbody(loops, reference, iterations):
     BODIES = initialize()  
 
     # Generator all body pairs
-    cached_body_pairs = generate_body_pairs(BODIES.keys())
+    cached_body_pairs = list(combinations(BODIES.keys(), 2))
 
     # Add BODIES to parameters
     offset_momentum(BODIES[reference], BODIES)
