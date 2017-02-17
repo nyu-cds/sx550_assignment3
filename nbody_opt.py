@@ -59,7 +59,6 @@ def advance(dt, iterations, BODIES, cached_body_pairs):
         advance the system one timestep
     '''
     for _ in range(iterations):
-        seenit = []
         # Remove nested for-loop with cached body pairs
         for body1, body2 in cached_body_pairs:
             ([x1, y1, z1], v1, m1) = BODIES[body1]
@@ -79,7 +78,6 @@ def advance(dt, iterations, BODIES, cached_body_pairs):
             v2[0] += dx * b1
             v2[1] += dy * b1
             v2[2] += dz * b1
-            seenit.append(body1)
         
         for body in BODIES.keys():
             (r, [vx, vy, vz], m) = BODIES[body]
@@ -100,7 +98,6 @@ def report_energy(BODIES, cached_body_pairs, e=0.0):
     '''
         compute the energy and return it so that it can be printed
     '''
-    seenit = []
     # Remove nested for-loop with cached body pairs
     for body1, body2 in cached_body_pairs:
         ((x1, y1, z1), v1, m1) = BODIES[body1]
@@ -111,8 +108,6 @@ def report_energy(BODIES, cached_body_pairs, e=0.0):
 
         # Compute energy
         e -= (m1 * m2) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
-
-        seenit.append(body1)
         
     for body in BODIES.keys():
         (r, [vx, vy, vz], m) = BODIES[body]
