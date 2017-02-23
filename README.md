@@ -1,3 +1,6 @@
+### Teammates
+lj1035  qc510  jl4454
+
 ## sx550_assignment3
 #### Name: Siyuan Xiang
 
