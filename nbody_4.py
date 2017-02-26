@@ -86,14 +86,12 @@ def advance(dt, cached_body_pairs):
     '''
         advance the system one timestep
     '''
-    seenit = []
     # Remove nested for-loop with cached body pairs
     for body1, body2 in cached_body_pairs:
         ([x1, y1, z1], v1, m1) = BODIES[body1]
         ([x2, y2, z2], v2, m2) = BODIES[body2]
         (dx, dy, dz) = compute_deltas(x1, x2, y1, y2, z1, z2)
         update_vs(v1, v2, dt, dx, dy, dz, m1, m2)
-        seenit.append(body1)
         
     for body in BODIES.keys():
         (r, [vx, vy, vz], m) = BODIES[body]
@@ -107,14 +105,12 @@ def report_energy(cached_body_pairs, e=0.0):
     '''
         compute the energy and return it so that it can be printed
     '''
-    seenit = []
     # Remove nested for-loop with cached body pairs
     for body1, body2 in cached_body_pairs:
         ((x1, y1, z1), v1, m1) = BODIES[body1]
         ((x2, y2, z2), v2, m2) = BODIES[body2]
         (dx, dy, dz) = compute_deltas(x1, x2, y1, y2, z1, z2)
         e -= compute_energy(m1, m2, dx, dy, dz)
-        seenit.append(body1)
         
     for body in BODIES.keys():
         (r, [vx, vy, vz], m) = BODIES[body]
@@ -161,4 +157,4 @@ def nbody(loops, reference, iterations):
 
 if __name__ == '__main__':
     import timeit
-    print(timeit.timeit("nbody(100, 'sun', 20000)", setup="from __main__ import nbody", number=5))
+    print(timeit.timeit("nbody(100, 'sun', 20000)", setup="from __main__ import nbody", number=1))
