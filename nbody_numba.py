@@ -6,9 +6,14 @@
     Optimized Runtime:              33.16189348570092 seconds
     Optimized Runtime with jit:     2.9945386796120186 seconds
     Speedup to 1st optimized:       11.074124275461847x
+    Optimized Runtime with jit&vec: 6.999645630469617 seconds
+    Speedup to 1st optimized:       4.737653195091255x
+
+    Vectorization slows down the program a lot. I guess vectorization leads to some overheads,
+    which may be much more than performance improvement we get from vectorization.
 """
 from itertools import combinations
-from numba import jit, int32, float32, float64, void
+from numba import jit, int32, float64, void, vectorize
 import numpy as np
 
 
@@ -66,9 +71,14 @@ def initialize():
      [5.15138902046611451e-05 * SOLAR_MASS,
       0.0,
       0.0])
-    ])
+    ], dtype=np.float64)
 
     return BODIES
+
+
+@vectorize([float64(float64, float64)])
+def vec_deltas(x, y):
+    return x - y
 
 
 # Add iterations
@@ -82,19 +92,15 @@ def advance(dt, iterations, BODIES, cached_body_pairs):
         # Remove nested for-loop with cached body pairs
         for index in range(len(cached_body_pairs)):
             (body1, body2) = cached_body_pairs[index]
-            x1 = BODIES[body1, 0, 0]
-            y1 = BODIES[body1, 0, 1]
-            z1 = BODIES[body1, 0, 2]
+            r1 = BODIES[body1, 0]
             v1 = BODIES[body1, 1]
             m1 = BODIES[body1, 2, 0]
-            x2 = BODIES[body2, 0, 0]
-            y2 = BODIES[body2, 0, 1]
-            z2 = BODIES[body2, 0, 2]
+            r2 = BODIES[body2, 0]
             v2 = BODIES[body2, 1]
             m2 = BODIES[body2, 2, 0]
             
             # Compute deltas
-            (dx, dy, dz) = (x1-x2, y1-y2, z1-z2)
+            (dx, dy, dz) = vec_deltas(r1, r2)
             
             # Update vs
             # Compute mag, b2 and b1 first
@@ -107,7 +113,7 @@ def advance(dt, iterations, BODIES, cached_body_pairs):
             v2[0] += dx * b1
             v2[1] += dy * b1
             v2[2] += dz * b1
-        
+            
         for body in range(len(BODIES)):
             r = BODIES[body, 0]
             v = BODIES[body, 1]
@@ -126,17 +132,13 @@ def report_energy(BODIES, cached_body_pairs, e=0.0):
     # Remove nested for-loop with cached body pairs
     for index in range(len(cached_body_pairs)):
         (body1, body2) = cached_body_pairs[index]
-        x1 = BODIES[body1, 0, 0]
-        y1 = BODIES[body1, 0, 1]
-        z1 = BODIES[body1, 0, 2]
+        r1 = BODIES[body1, 0]
         m1 = BODIES[body1, 2, 0]
-        x2 = BODIES[body2, 0, 0]
-        y2 = BODIES[body2, 0, 1]
-        z2 = BODIES[body2, 0, 2]
+        r2 = BODIES[body2, 0]
         m2 = BODIES[body2, 2, 0]
 
         # Compute deltas
-        (dx, dy, dz) = (x1-x2, y1-y2, z1-z2)
+        (dx, dy, dz) = vec_deltas(r1, r2)
 
         # Compute energy
         e -= (m1 * m2) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
@@ -189,7 +191,7 @@ def nbody(loops, reference, iterations):
     BODIES = initialize()  
 
     # Generator all body pairs
-    cached_body_pairs = np.array(list(combinations(range(5), 2)))
+    cached_body_pairs = np.array(list(combinations(range(5), 2)), dtype=np.int32)
 
     # Add BODIES to parameters
     offset_momentum(reference, BODIES, 0.0, 0.0, 0.0)
