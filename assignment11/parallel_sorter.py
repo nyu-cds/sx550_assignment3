@@ -3,7 +3,18 @@ import numpy as np
 import itertools
 
 # Length of data
-length = 10000
+LENGTH = 10000
+
+def slice_data(data, size):
+    # Prepare for slicing
+    data = np.array(data)
+    min_num, max_num = min(data), max(data)
+    delta = (max_num - min_num) / (size-1)
+
+    # Process 0 keeps the least number and other processes get range evenly
+    data_sliced = [data[(data>min_num+delta*(i-1)) & (data<=min_num+delta*(i))] for i in range(size)]
+
+    return data_sliced
 
 def psort():
     '''
@@ -20,14 +31,8 @@ def psort():
     # Process 0 generates data and slice it according number of processes
     if rank == 0:
         # Generates random data
-        data = np.random.randint(0, length, length)
-        
-        # Prepare for slicing
-        min_num, max_num = min(data), max(data)
-        delta = (max_num - min_num) / (size-1)
-
-        # Process 0 keeps the least number and other processes get range evenly
-        data_sliced = [data[(data>min_num+delta*(i-1)) & (data<=min_num+delta*(i))] for i in range(size)]
+        data = np.random.randint(0, LENGTH, LENGTH)
+        data_sliced = slice_data(data, size)
 
     else:
         data_sliced = None
