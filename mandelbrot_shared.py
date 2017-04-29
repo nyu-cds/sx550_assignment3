@@ -1,7 +1,7 @@
 # 
 # A CUDA version to calculate the Mandelbrot set
 #
-from numba import cuda, int32
+from numba import cuda, int32, float32
 import numpy as np
 from pylab import imshow, show
 
@@ -41,34 +41,34 @@ def compute_mandel(min_x, max_x, min_y, max_y, image, iters):
     # Use shared memory to store constant values
     shared_height = cuda.shared.array(shape=(1), dtype=int32)
     shared_width = cuda.shared.array(shape=(1), dtype=int32)
-    shared_height = image.shape[0]
-    shared_width = image.shape[1]
+    shared_height[0] = image.shape[0]
+    shared_width[0] = image.shape[1]
 
-    shared_pixel_size_x = cuda.shared.array(shape=(1), dtype=int32)
-    shared_pixel_size_y = cuda.shared.array(shape=(1), dtype=int32)
-    shared_pixel_size_x = (max_x - min_x) / shared_width
-    shared_pixel_size_y = (max_y - min_y) / shared_height
+    shared_pixel_size_x = cuda.shared.array(shape=(1), dtype=float32)
+    shared_pixel_size_y = cuda.shared.array(shape=(1), dtype=float32)
+    shared_pixel_size_x[0] = (max_x - min_x) / shared_width[0]
+    shared_pixel_size_y[0] = (max_y - min_y) / shared_height[0]
 
     shared_r = cuda.shared.array(shape=(1), dtype=int32)
     shared_s = cuda.shared.array(shape=(1), dtype=int32)
-    shared_r = blockdim[1] * griddim[1]
-    shared_s = blockdim[0] * griddim[0]
+    shared_r[0] = blockdim[1] * griddim[1]
+    shared_s[0] = blockdim[0] * griddim[0]
 
     shared_r_range = cuda.shared.array(shape=(1), dtype=int32)
     shared_s_range = cuda.shared.array(shape=(1), dtype=int32)
-    shared_r_range = (shared_width-1) // shared_r + 1
-    shared_s_range = (shared_height-1) // shared_s + 1
+    shared_r_range[0] = (shared_width[0]-1) // shared_r[0] + 1
+    shared_s_range[0] = (shared_height[0]-1) // shared_s[0] + 1
 
     # Wait until all threads finish preloading
     cuda.syncthreads()
-    
+
     # Every thread (y,x) will deal with points like (y+j*s, x+i*r)
-    for i in range(shared_r_range):
-        for j in range(shared_s_range):
-            if shared_r * i + x < shared_width and shared_s * j + y < shared_height:
-                real = min_x + (shared_r * i + x) * shared_pixel_size_x
-                imag = min_y + (shared_s * j + y) * shared_pixel_size_y
-                image[shared_s * j + y, shared_r * i + x] = mandel(real, imag, iters)
+    for i in range(shared_r_range[0]):
+        for j in range(shared_s_range[0]):
+            if shared_r[0] * i + x < shared_width[0] and shared_s[0] * j + y < shared_height[0]:
+                real = min_x + (shared_r[0] * i + x) * shared_pixel_size_x[0]
+                imag = min_y + (shared_s[0] * j + y) * shared_pixel_size_y[0]
+                image[shared_s[0] * j + y, shared_r[0] * i + x] = mandel(real, imag, iters)
 
 
 if __name__ == '__main__':
